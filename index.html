@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NHD | Modern Organic Rituals</title>
+    <link rel="icon" type="image/jpeg" href="nav.logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            --charcoal: #2b2b2b;
+            --charcoal-light: #3d3d3d;
+            --sand: #e6e2d8; 
+            --sand-dark: #d6d1c4;
+            --cream: #f4f2ec;
+            --olive: #5e6252; 
+            --white: #ffffff;
+            --nav-bg: #ccc4b7; 
+            
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth; 
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--sand);
+            /* Subtle noise texture */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        img.footer-logo {
+    padding-bottom: 3px;
+    /* margin-block-start: inherit; */
+    margin-top: -59px;
+}
+
+        .delay-1 { transition-delay: 0.15s; }
+        .delay-2 { transition-delay: 0.3s; }
+        .delay-3 { transition-delay: 0.45s; }
+        .delay-4 { transition-delay: 0.6s; }
+
+        /* --- NAVIGATION (Absolute Position) --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: rgba(204, 196, 183, 0.85); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(43, 43, 43, 0.08);
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            animation: fadeDown 1s ease forwards;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Logo Styling & Floating Animation */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 45px; 
+            cursor: pointer;
+            overflow: hidden;
+            animation: floatLogo 4s ease-in-out infinite;
+        }
+
+        .nav-logo {
+            height: 100px; 
+            width: auto;
+            object-fit: contain;
+            mix-blend-mode: multiply; 
+            transform: scale(1.1);
+            transition: transform 0.4s ease;
+        }
+
+        .logo-container:hover .nav-logo {
+            transform: scale(1.15);
+        }
+
+        /* Desktop Links */
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        img.nav-logo {
+            height: stretch;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--charcoal);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Nav Actions (Cart & Hamburger) */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .cart-btn {
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--charcoal);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .cart-btn:hover {
+            background-color: var(--charcoal);
+            color: var(--sand);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(43,43,43,0.2);
+        }
+
+        /* Hamburger Button */
+        .hamburger {
+            display: none; 
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 30px;
+            height: 2px;
+            background-color: var(--charcoal);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Hamburger to X Animation */
+        .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Side Mobile Menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background-color: var(--nav-bg);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 999;
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .side-menu a {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.4s ease;
+        }
+
+        .side-menu.active a {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .side-menu.active a:nth-child(1) { transition-delay: 0.1s; }
+        .side-menu.active a:nth-child(2) { transition-delay: 0.2s; }
+        .side-menu.active a:nth-child(3) { transition-delay: 0.3s; }
+        .side-menu.active a:nth-child(4) { transition-delay: 0.4s; }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(43,43,43,0.5);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 998;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            display: flex;
+            min-height: 85vh;
+            padding: 10rem 5% 5rem; 
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: slideRight 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+        }
+
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-content h1 span {
+            display: block;
+            width: 0; 
+            height: 8px;
+            background-color: var(--charcoal);
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            animation: drawLine 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+        }
+
+        @keyframes drawLine {
+            from { width: 0; opacity: 0; }
+            to { width: 60px; opacity: 1; }
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            max-width: 450px;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.8s forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 0.8; transform: translateY(0); }
+        }
+
+        .btn-primary {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--charcoal);
+            color: var(--sand);
+            padding: 1rem 2.5rem;
+            font-family: var(--font-display);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeUp 1s ease 1s forwards;
+            z-index: 1;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+            z-index: -1;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            background-color: var(--olive);
+            box-shadow: 0 10px 25px rgba(43, 43, 43, 0.2);
+        }
+
+        .hero-image {
+            flex: 1;
+            height: 650px;
+            border-radius: 200px 200px 20px 20px; 
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            opacity: 0;
+            transform: scale(0.95);
+            animation: revealImage 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+        }
+
+        @keyframes revealImage {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%) contrast(110%);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.06); 
+        }
+
+        /* --- TRUST STRIP --- */
+        .trust-strip {
+            background-color: var(--charcoal);
+            color: var(--sand);
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .trust-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--sand);
+            border-radius: 50%;
+            animation: pulse 2.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(230, 226, 216, 0.5); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(230, 226, 216, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(230, 226, 216, 0); }
+        }
+
+        /* --- CATEGORIES --- */
+        .categories {
+            padding: 7rem 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .category-card {
+            position: relative;
+            height: 450px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .category-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .category-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2.5rem;
+            background: linear-gradient(to top, rgba(43,43,43,0.9), transparent);
+            color: var(--white);
+            transition: padding 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .category-card:hover .category-overlay {
+            padding-bottom: 3rem;
+        }
+
+        .category-overlay h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-overlay span {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--white);
+            padding-bottom: 2px;
+            transition: color 0.3s ease;
+        }
+
+        .category-card:hover .category-overlay span {
+            color: var(--nav-bg); 
+        }
+
+        /* --- FEATURED PRODUCTS --- */
+        .featured {
+            padding: 7rem 5%;
+            background-color: var(--cream);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .product-card {
+            text-align: center;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-12px);
+        }
+
+        .product-image {
+            background-color: var(--sand-dark);
+            height: 350px;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.08) rotate(1deg);
+        }
+
+        .product-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card p {
+            color: var(--olive);
+            font-weight: 500;
+            margin-bottom: 1.2rem;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            border: 1px solid var(--charcoal);
+            padding: 0.7rem 1.8rem;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            background-color: transparent;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--charcoal);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(43,43,43,0.15);
+        }
+
+        /* --- PHILOSOPHY / STORY SECTION --- */
+        .philosophy {
+            padding: 8rem 5%;
+            display: flex;
+            align-items: center;
+            gap: 6rem;
+        }
+
+        .philosophy-text {
+            flex: 1;
+        }
+
+        .philosophy-text h2 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .philosophy-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .philosophy-image {
+            flex: 1;
+            height: 550px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+        
+        .philosophy-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(30%);
+            transition: filter 0.8s ease, transform 0.8s ease;
+        }
+
+        .philosophy-image:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--charcoal);
+            color: var(--sand);
+            padding: 6rem 5% 2rem;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+
+        /* Footer Logo Styling - UPDATED FOR TOP LEFT */
+        .footer-logo-container {
+            display: block;
+            width: fit-content;
+            margin-bottom: 1.5rem; /* Space between logo and paragraph */
+        }
+
+        .footer-logo {
+            height: 60px; /* Adjust this height if you want it bigger/smaller */
+            width: auto;
+            object-fit: contain;
+            /* This filter turns the dark logo into a white/sand color for the dark footer */
+            filter: invert(1) brightness(2) grayscale(1); 
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-logo:hover {
+            opacity: 1;
+        }
+
+        .newsletter {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .newsletter p {
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .input-group {
+            display: flex;
+            border-bottom: 1px solid rgba(230, 226, 216, 0.3);
+            padding-bottom: 0.5rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group:focus-within {
+            border-color: var(--sand);
+        }
+
+        .input-group input {
+            background: transparent;
+            border: none;
+            color: var(--sand);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            width: 100%;
+            outline: none;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(230, 226, 216, 0.5);
+        }
+
+        .input-group button {
+            background: transparent;
+            border: none;
+            color: var(--sand);
+            font-family: var(--font-display);
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: transform 0.3s ease;
+        }
+        
+        .input-group button:hover {
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(230, 226, 216, 0.1);
+            padding-top: 2rem;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* --- RESPONSIVE DESIGN (Mobile & Tablets) --- */
+        @media (max-width: 900px) {
+            .hero, .philosophy {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-content p {
+                margin: 0 auto 2.5rem auto;
+            }
+            .hero-content h1 span {
+                margin: 1.5rem auto; 
+            }
+            .hero-image, .philosophy-image {
+                width: 100%;
+                height: 400px;
+            }
+            .nav-links {
+                display: none; 
+            }
+            .hamburger {
+                display: flex; 
+            }
+            .trust-strip {
+                justify-content: center;
+                text-align: center;
+            }
+            .nav-logo {
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Side Mobile Menu -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="side-menu" id="sideMenu">
+        <a href="#" class="close-menu">Shop Soaps</a>
+        <a href="#" class="close-menu">Shampoo</a>
+        <a href="#" class="close-menu">Scrubs</a>
+        <a href="#" class="close-menu">Our Philosophy</a>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo-container">
+            <img src="nav2.png" alt="NHD Logo" class="nav-logo">
+        </a>
+        
+        <div class="nav-links">
+            <a href="#">Shop Soaps</a>
+            <a href="#">Shampoo</a>
+            <a href="#">Scrubs</a>
+            <a href="#">Our Philosophy</a>
+        </div>
+        
+        <div class="nav-actions">
+            <a href="#" class="cart-btn">Cart (0)</a>
+            <!-- Hamburger Button -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Nature,<br>Refined.</h1>
+            <span></span> 
+            <p>Elevated organic rituals for your daily cleanse. Sculptural soaps, potent shampoos, and renewing body scrubs. Formulated with intention, backed by science.</p>
+            <a href="#" class="btn-primary">Shop the Ritual</a>
+        </div>
+        <div class="hero-image">
+            <img src="./hero.png" alt="Sculptural Organic Soap">
+        </div>
+    </section>
+
+    <!-- Trust Strip -->
+    <div class="trust-strip reveal">
+        <div class="trust-item"><div class="trust-dot"></div> Small-Batch Formulated</div>
+        <div class="trust-item"><div class="trust-dot"></div> Biologist-Created</div>
+        <div class="trust-item"><div class="trust-dot"></div> Full Ingredient Transparency</div>
+        <div class="trust-item"><div class="trust-dot"></div> Cruelty-Free & Vegan</div>
+    </div>
+
+    <!-- Category Entry (The Three Pillars) -->
+    <section class="categories">
+        <div class="section-header reveal">
+            <h2>The Daily Elements</h2>
+            <p>Solid and liquid formats designed to work in harmony.</p>
+        </div>
+        <div class="category-grid">
+            <div class="category-card reveal delay-1">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSTv5E6CazKxXnWwffXcV0EJKY8xgr6YF_ohJMumFQvQ&s=10" alt="Organic Soaps">
+                <div class="category-overlay">
+                    <h3>Cleansing Bars</h3>
+                    <span>Explore Soaps →</span>
+                </div>
+            </div>
+            <div class="category-card reveal delay-2">
+                <img src="https://media.istockphoto.com/id/2152439466/photo/natural-hair-care-portrait-of-young-woman-in-exotic-tropical-foliage.jpg?s=1024x1024&w=is&k=20&c=Mxj-Z0z0Lf2xMFs5pWMt2wBETwzv3-Mfixs31CsZuyY=" alt="Organic Shampoo">
+                <div class="category-overlay">
+                    <h3>Scalp & Hair</h3>
+                    <span>Explore Shampoos →</span>
+                </div>
+            </div>
+            <div class="category-card reveal delay-3">
+                <img src="https://images.pexels.com/photos/27860842/pexels-photo-27860842.jpeg" alt="Body Scrubs">
+                <div class="category-overlay">
+                    <h3>Renewing Scrubs</h3>
+                    <span>Explore Scrubs →</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured">
+        <div class="section-header reveal">
+            <h2>Essential Formulas</h2>
+            <p>Our most-loved staples for a grounded routine.</p>
+        </div>
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-card reveal delay-1">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?q=80&w=600&auto=format&fit=crop" alt="Charcoal Soap">
+                </div>
+                <h4>Ink & Clay Bar</h4>
+                <p>Rs. 1,200</p>
+                <a href="#" class="btn-outline">Add to Cart</a>
+            </div>
+            <!-- Product 2 -->
+            <div class="product-card reveal delay-2">
+                <div class="product-image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMiuu9AX3q5zXf9kWdesUd2ZJ3V9iN5iXg_MGouNs-mw&s=10" alt="Botanical Shampoo">
+                </div>
+                <h4>Botanical Scalp Wash</h4>
+                <p>Rs. 2,400</p>
+                <a href="#" class="btn-outline">Add to Cart</a>
+            </div>
+            <!-- Product 3 -->
+            <div class="product-card reveal delay-3">
+                <div class="product-image">
+                    <img src="https://images.pexels.com/photos/6634660/pexels-photo-6634660.jpeg" alt="Coffee Scrub">
+                </div>
+                <h4>Raw Coffee Scrub</h4>
+                <p>Rs. 1,800</p>
+                <a href="#" class="btn-outline">Add to Cart</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy / Story -->
+    <section class="philosophy">
+        <div class="philosophy-text reveal">
+            <h2>Less Promise.<br>More Presence.</h2>
+            <p>NHD was born from a simple realization: the organic skincare market was either too rustic or too clinical. We wanted something different—a structural, modern approach to natural care.</p>
+            <p>Every bar, bottle, and scrub is formulated by a biologist, prioritizing native botanicals and absolute transparency. We leave out the fillers, the synthetic fragrances, and the fluff. What remains is pure, tactile, and effective.</p>
+            <a href="#" class="btn-primary" style="animation-delay: 0s; opacity: 1; transform: none; margin-top: 1rem;">Read Our Story</a>
+        </div>
+        <div class="philosophy-image reveal">
+            <img src="https://www.apiceuticals.com/wp-content/uploads/2026/07/1784571675455_Spa-style-hair-care-products-on-stone-counter-1024x585.jpeg" alt="Botanical Ingredients">
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-brand reveal">
+                <!-- FOOTER LOGO ADDED HERE -->
+                <a href="#" class="footer-logo-container">
+                    <img src="nav2.png" alt="NHD Logo" class="footer-logo">
+                </a>
+                <p style="max-width: 300px; opacity: 0.7; font-size: 0.9rem;">Sculptural organic care. Formulated in small batches in Pakistan.</p>
+            </div>
+            <div class="newsletter reveal delay-1">
+                <p>Join the NHD ritual. Receive 10% off your first order and access to our ingredient journal.</p>
+                <div class="input-group">
+                    <input type="email" placeholder="Enter your email address">
+                    <button type="submit">Subscribe</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 NHD Organic. All rights reserved.</p>
+            <div>
+                <a href="#" style="margin-right: 15px;">Shipping & Returns</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Scroll Reveal Animation
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, {
+                threshold: 0.15 
+            });
+
+            reveals.forEach(reveal => {
+                observer.observe(reveal);
+            });
+
+            // 2. Hamburger Menu Logic
+            const hamburger = document.getElementById('hamburger');
+            const sideMenu = document.getElementById('sideMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+            const closeMenuLinks = document.querySelectorAll('.close-menu');
+
+            function toggleMenu() {
+                hamburger.classList.toggle('active');
+                sideMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+            }
+
+            hamburger.addEventListener('click', toggleMenu);
+            menuOverlay.addEventListener('click', toggleMenu);
+
+            // Close menu when a link is clicked
+            closeMenuLinks.forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
+        });
+    </script>
+
+</body>
+</html>
